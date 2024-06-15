@@ -22,12 +22,7 @@ func EnterMove(matrix *[][]int, revealed *[][]bool) {
 		PrintString("Invalid coordinates: already revealed cell.\n")
 		EnterMove(matrix, revealed)
 	} else { // NORMAL MOVE
-		if (*matrix)[y][x] == 0 { // EMPTY CELL
-			Reveal(matrix, revealed, x, y)
-		} else {
-			(*revealed)[y][x] = true
-			CLOSED_COUNT--
-		}
+		Reveal(matrix, revealed, x, y)
 
 		if CLOSED_COUNT == 0 { // WIN
 			PrintMap()
@@ -35,6 +30,26 @@ func EnterMove(matrix *[][]int, revealed *[][]bool) {
 			PrintStatistics()
 		} else {
 			EnterMove(matrix, revealed)
+		}
+	}
+}
+
+func Reveal(matrix *[][]int, revealed *[][]bool, x, y int) {
+	(*revealed)[y][x] = true
+	CLOSED_COUNT--
+
+	if (*matrix)[y][x] > 0 {
+		return
+	}
+
+	for y_next := y - 1; y_next <= y+1; y_next++ {
+		for x_next := x - 1; x_next <= x+1; x_next++ {
+			if y_next == 0 || y_next == HEIGHT+1 || x_next == 0 || x_next == WIDTH+1 {
+				continue
+			}
+			if !(*revealed)[y_next][x_next] {
+				Reveal(matrix, revealed, x_next, y_next)
+			}
 		}
 	}
 }
