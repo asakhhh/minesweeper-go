@@ -27,6 +27,7 @@ func EnterMove(matrix *[][]int, revealed *[][]bool) {
 		PrintString("Invalid coordinates: already revealed cell.\n")
 		EnterMove(matrix, revealed)
 	} else { // NORMAL MOVE
+<<<<<<< HEAD
 		if (*matrix)[y][x] == 0 { // EMPTY CELL
 			Reveal(matrix, revealed, x, y)
 		} else {
@@ -34,6 +35,9 @@ func EnterMove(matrix *[][]int, revealed *[][]bool) {
 			CLOSED_COUNT--
 		}
 		MOVE_COUNT++
+=======
+		Reveal(matrix, revealed, x, y)
+>>>>>>> b3d4c75f67f9ce1a435fff2f1bb6ae1b23fc8936
 
 		if CLOSED_COUNT == 0 { // WIN
 			PrintMap()
@@ -45,6 +49,7 @@ func EnterMove(matrix *[][]int, revealed *[][]bool) {
 	}
 }
 
+<<<<<<< HEAD
 func PrintStatistics() {
 	PrintString("Your statistics:\n")
 
@@ -61,4 +66,24 @@ func PrintStatistics() {
 	PrintString("- Number of moves: ")
 	PrintNum(MOVE_COUNT)
 	ap.PutRune('\n')
+=======
+func Reveal(matrix *[][]int, revealed *[][]bool, x, y int) {
+	(*revealed)[y][x] = true
+	CLOSED_COUNT--
+
+	if (*matrix)[y][x] > 0 {
+		return
+	}
+
+	for y_next := y - 1; y_next <= y+1; y_next++ {
+		for x_next := x - 1; x_next <= x+1; x_next++ {
+			if y_next == 0 || y_next == HEIGHT+1 || x_next == 0 || x_next == WIDTH+1 {
+				continue
+			}
+			if !(*revealed)[y_next][x_next] {
+				Reveal(matrix, revealed, x_next, y_next)
+			}
+		}
+	}
+>>>>>>> b3d4c75f67f9ce1a435fff2f1bb6ae1b23fc8936
 }
