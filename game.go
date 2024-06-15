@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/alem-platform/ap"
+)
 
 func EnterMove(matrix *[][]int, revealed *[][]bool) {
 	PrintMap(&matrix, &revealed)
@@ -17,6 +21,7 @@ func EnterMove(matrix *[][]int, revealed *[][]bool) {
 	if (*matrix)[y][x] == -1 { // BOMB
 		PrintMap()
 		PrintString("Game Over!\n")
+		MOVE_COUNT++
 		PrintStatistics()
 	} else if (*revealed)[y][x] { // INVALID MOVE
 		PrintString("Invalid coordinates: already revealed cell.\n")
@@ -28,6 +33,7 @@ func EnterMove(matrix *[][]int, revealed *[][]bool) {
 			(*revealed)[y][x] = true
 			CLOSED_COUNT--
 		}
+		MOVE_COUNT++
 
 		if CLOSED_COUNT == 0 { // WIN
 			PrintMap()
@@ -37,4 +43,22 @@ func EnterMove(matrix *[][]int, revealed *[][]bool) {
 			EnterMove(matrix, revealed)
 		}
 	}
+}
+
+func PrintStatistics() {
+	PrintString("Your statistics:\n")
+
+	PrintString("- Field size: ")
+	PrintNum(HEIGHT)
+	ap.PutRune('x')
+	PrintNum(WIDTH)
+	ap.PutRune('\n')
+
+	PrintString("- Number of bombs: ")
+	PrintNum(BOMB_COUNT)
+	ap.PutRune('\n')
+
+	PrintString("- Number of moves: ")
+	PrintNum(MOVE_COUNT)
+	ap.PutRune('\n')
 }

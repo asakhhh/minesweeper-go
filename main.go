@@ -9,7 +9,9 @@ import (
 var (
 	HEIGHT       int
 	WIDTH        int
+	BOMB_COUNT   int
 	CLOSED_COUNT int
+	MOVE_COUNT   int
 )
 
 func main() {
@@ -22,12 +24,14 @@ func main() {
 
 	if MODE == 1 {
 		HEIGHT, WIDTH = ReadHeightAndWidth()
-		CLOSED_COUNT = HEIGHT*WIDTH - CustomMap(HEIGHT, WIDTH, &matrix)
+		BOMB_COUNT = CustomMap(HEIGHT, WIDTH, &matrix)
+		CLOSED_COUNT = HEIGHT*WIDTH - BOMB_COUNT
 	} else { // Random map
 		HEIGHT, WIDTH = GenerateRandomSize()
-		CLOSED_COUNT = HEIGHT*WIDTH - GenerateRandomMap(HEIGHT, WIDTH, &matrix)
+		BOMB_COUNT = GenerateRandomMap(HEIGHT, WIDTH, &matrix)
+		CLOSED_COUNT = HEIGHT*WIDTH - BOMB_COUNT
 	}
-	if CLOSED_COUNT > HEIGHT*WIDTH {
+	if BOMB_COUNT < 2 {
 		return
 	}
 
