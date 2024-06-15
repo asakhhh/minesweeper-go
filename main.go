@@ -20,7 +20,7 @@ func main() {
 	var matrix [][]int
 
 	if MODE == 1 { // Custom map
-		// HEIGHT, WIDTH := ReadHeightAndWidth()
+		CustomMap(HEIGHT, WIDTH, matrix)
 	} else { // Random map
 		HEIGHT, WIDTH = GenerateRandomSize()
 
