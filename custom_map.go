@@ -45,6 +45,9 @@ func CustomMap(h, w int, matrix *[][]int) int {
 	}
 	*matrix = append(*matrix, NewMatrix...)
 
+	if bomb_count < 2 {
+		PrintString("There must be at least two bombs.\n")
+	}
 	return bomb_count
 }
 
