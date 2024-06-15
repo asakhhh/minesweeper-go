@@ -6,17 +6,19 @@ import (
 	"github.com/alem-platform/ap"
 )
 
-func CustomMap(h, w int, matrix [][]int) {
-	matrix = make([][]int, h+2)
-	for i := range matrix {
-		matrix[i] = make([]int, w+2)
+func CustomMap(h, w int, matrix *[][]int) {
+	NewMatrix := make([][]int, h+2)
+	for i := range NewMatrix {
+		NewMatrix[i] = make([]int, w+2)
 	}
+
 	PrintString("Enter ")
 	PrintNum(h)
 	PrintString(" lines follow, ")
 	PrintString("each with ")
 	PrintNum(w)
 	PrintString(" characters representing the grid: '.' represents an empty cell, '*' represents a bomb(e.g., '..*' for 3 width):\n")
+
 	for i := 1; i <= h; i++ {
 		var row string
 		_, err := fmt.Scanf("%s", &row)
@@ -27,19 +29,18 @@ func CustomMap(h, w int, matrix [][]int) {
 			return
 		}
 		for j := 1; j <= w; j++ {
-			if row[j] != '.' || row[j] != '*' {
+			if row[j-1] != '.' && row[j-1] != '*' {
 				print("Invalid character in row. Please enter only '.' or '*'.\n")
 				return
 			}
-			value := 0
-			if row[j] == '*' {
-				value = -1
-			} else if row[j] == '.' {
-				value = 0
+			if row[j-1] == '*' {
+				NewMatrix[i][j] = -1
+			} else if row[j-1] == '.' {
+				NewMatrix[i][j] = 0
 			}
-			matrix[i][j] = value
 		}
 	}
+	*matrix = append(*matrix, NewMatrix...)
 }
 
 func PrintNum(n int) { // to print numbers
