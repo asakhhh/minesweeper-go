@@ -19,9 +19,12 @@ func main() {
 
 	var matrix [][]int
 
-	if MODE == 1 {
+	if MODE == 1 { // Custom map
 		CustomMap(HEIGHT, WIDTH, matrix)
-	} else {
+	} else { // Random map
+		HEIGHT, WIDTH = GenerateRandomSize()
+
+		GenerateRandomMap(HEIGHT, WIDTH, &matrix)
 	}
 }
 
@@ -39,8 +42,6 @@ func ReadHeightAndWidth() (int, int) {
 func ChooseMode() int {
 	PrintString("Choose a mode:\n1. Enter a custom map\n2. Generate a random map\n")
 	PrintString("Enter your choice (1/2): ")
-
-	var mode int
 
 	var inp string
 	var r rune
@@ -61,7 +62,7 @@ func ChooseMode() int {
 		return ChooseMode()
 	}
 
-	return mode
+	return int(rune(inp[0]) - '0')
 }
 
 func PrintString(str string) {
@@ -89,5 +90,14 @@ func CountAdjacentBombs(matrix *[][]int) {
 				(*matrix)[i][j] = bomb_count
 			}
 		}
+	}
+}
+
+func PrintMatrix(matrix *[][]int) {
+	for _, v := range *matrix {
+		for _, vv := range v {
+			fmt.Printf("%d ", vv)
+		}
+		ap.PutRune('\n')
 	}
 }
