@@ -6,13 +6,18 @@ import (
 	"github.com/alem-platform/ap"
 )
 
+var (
+	HEIGHT int
+	WIDTH  int
+)
+
 func main() {
 	PrintString("Hello! This is Minesweeper.\n")
 	PrintString("You can create your own map or play a generated one.\n\n")
 
 	MODE := ChooseMode()
 
-	fmt.Println(MODE)
+	var matrix [][]int
 
 	if MODE == 1 {
 		CustomMap(HEIGHT, WIDTH, matrix)
@@ -62,5 +67,27 @@ func ChooseMode() int {
 func PrintString(str string) {
 	for _, c := range str {
 		ap.PutRune(c)
+	}
+}
+
+func CountAdjacentBombs(matrix *[][]int) {
+	bomb_count := 0
+
+	for i := 1; i <= HEIGHT; i++ {
+		for j := 1; j <= WIDTH; j++ {
+			bomb_count = 0
+			if (*matrix)[i][j] == 0 {
+
+				for x := i - 1; x <= i+1; x++ {
+					for y := j - 1; y <= j+1; y++ {
+						if (*matrix)[x][y] == -1 {
+							bomb_count += 1
+						}
+					}
+				}
+
+				(*matrix)[i][j] = bomb_count
+			}
+		}
 	}
 }

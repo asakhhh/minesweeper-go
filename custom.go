@@ -27,17 +27,14 @@ func CustomMap(h, w int, matrix [][]int) {
 			return
 		}
 		for j := 1; j <= w; j++ {
-			if row[j] != '.' || row[j] != '*' {
+			if row[j] == '.' {
+				matrix[i][j] = 0
+			} else if row[j] == '*' {
+				matrix[i][j] = -1
+			} else {
 				print("Invalid character in row. Please enter only '.' or '*'.\n")
 				return
 			}
-			value := 0
-			if row[j] == '*' {
-				value = -1
-			} else if row[j] == '.' {
-				value = 0
-			}
-			matrix[i][j] = value
 		}
 	}
 }
