@@ -15,6 +15,7 @@ func main() {
 	fmt.Println(MODE)
 
 	if MODE == 1 {
+		CustomMap(HEIGHT, WIDTH, matrix)
 	} else {
 	}
 }
