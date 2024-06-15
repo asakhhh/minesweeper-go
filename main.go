@@ -22,7 +22,10 @@ func main() {
 	if MODE == 1 {
 		HEIGHT, WIDTH = ReadHeightAndWidth()
 		CustomMap(HEIGHT, WIDTH, &matrix)
-	} else {
+	} else { // Random map
+		HEIGHT, WIDTH = GenerateRandomSize()
+
+		GenerateRandomMap(HEIGHT, WIDTH, &matrix)
 	}
 }
 
@@ -69,5 +72,36 @@ func ChooseMode() int {
 func PrintString(str string) {
 	for _, c := range str {
 		ap.PutRune(c)
+	}
+}
+
+func CountAdjacentBombs(matrix *[][]int) {
+	bomb_count := 0
+
+	for i := 1; i <= HEIGHT; i++ {
+		for j := 1; j <= WIDTH; j++ {
+			bomb_count = 0
+			if (*matrix)[i][j] == 0 {
+
+				for x := i - 1; x <= i+1; x++ {
+					for y := j - 1; y <= j+1; y++ {
+						if (*matrix)[x][y] == -1 {
+							bomb_count += 1
+						}
+					}
+				}
+
+				(*matrix)[i][j] = bomb_count
+			}
+		}
+	}
+}
+
+func PrintMatrix(matrix *[][]int) {
+	for _, v := range *matrix {
+		for _, vv := range v {
+			fmt.Printf("%d ", vv)
+		}
+		ap.PutRune('\n')
 	}
 }
