@@ -7,8 +7,9 @@ import (
 )
 
 var (
-	HEIGHT int
-	WIDTH  int
+	HEIGHT       int
+	WIDTH        int
+	CLOSED_COUNT int
 )
 
 func main() {
@@ -21,12 +22,21 @@ func main() {
 
 	if MODE == 1 {
 		HEIGHT, WIDTH = ReadHeightAndWidth()
-		CustomMap(HEIGHT, WIDTH, &matrix)
+		CLOSED_COUNT = HEIGHT*WIDTH - CustomMap(HEIGHT, WIDTH, &matrix)
 	} else { // Random map
 		HEIGHT, WIDTH = GenerateRandomSize()
-
-		GenerateRandomMap(HEIGHT, WIDTH, &matrix)
+		CLOSED_COUNT = HEIGHT*WIDTH - GenerateRandomMap(HEIGHT, WIDTH, &matrix)
 	}
+	if CLOSED_COUNT > HEIGHT*WIDTH {
+		return
+	}
+
+	revealed := make([][]bool, HEIGHT+2)
+	for i := range revealed {
+		revealed[i] = make([]bool, WIDTH+2)
+	}
+
+	EnterMove(&matrix, &revealed)
 }
 
 func ReadHeightAndWidth() (int, int) {

@@ -19,7 +19,7 @@ func GenerateRandomSize() (int, int) {
 	return int(rand.Int31n(8) + 3), int(rand.Int31n(8) + 3)
 }
 
-func GenerateRandomMap(h, w int, matrix *[][]int) {
+func GenerateRandomMap(h, w int, matrix *[][]int) int {
 	*matrix = (*matrix)[:0]
 	for i := 0; i < h+2; i++ {
 		var t []int
@@ -43,4 +43,6 @@ func GenerateRandomMap(h, w int, matrix *[][]int) {
 		bomb_w := 1 + v%w
 		(*matrix)[bomb_h][bomb_w] = -1
 	}
+
+	return bomb_count
 }
