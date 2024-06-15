@@ -2,7 +2,7 @@ package main
 
 import "github.com/alem-platform/ap"
 
-func printMap(height, width int, value [][]int, revealed [][]bool) {
+func PrintMap(height, width int, value [][]int, revealed [][]bool) {
 	length := 1
 	p := 1
 	for p*10 <= height {
