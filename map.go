@@ -1,5 +1,3 @@
-package main
-
 import "github.com/alem-platform/ap"
 
 // colors for characters
