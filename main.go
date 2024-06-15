@@ -6,16 +6,25 @@ import (
 	"github.com/alem-platform/ap"
 )
 
+var (
+	HEIGHT int
+	WIDTH  int
+)
+
 func main() {
 	PrintString("Hello! This is Minesweeper.\n")
 	PrintString("You can create your own map or play a generated one.\n\n")
 
 	MODE := ChooseMode()
 
-	fmt.Println(MODE)
+	var matrix [][]int
 
-	if MODE == 1 {
-	} else {
+	if MODE == 1 { // Custom map
+		// HEIGHT, WIDTH := ReadHeightAndWidth()
+	} else { // Random map
+		HEIGHT, WIDTH = GenerateRandomSize()
+
+		GenerateRandomMap(HEIGHT, WIDTH, &matrix)
 	}
 }
 
@@ -33,8 +42,6 @@ func ReadHeightAndWidth() (int, int) {
 func ChooseMode() int {
 	PrintString("Choose a mode:\n1. Enter a custom map\n2. Generate a random map\n")
 	PrintString("Enter your choice (1/2): ")
-
-	var mode int
 
 	var inp string
 	var r rune
@@ -55,11 +62,20 @@ func ChooseMode() int {
 		return ChooseMode()
 	}
 
-	return mode
+	return int(rune(inp[0]) - '0')
 }
 
 func PrintString(str string) {
 	for _, c := range str {
 		ap.PutRune(c)
+	}
+}
+
+func PrintMatrix(matrix *[][]int) {
+	for _, v := range *matrix {
+		for _, vv := range v {
+			fmt.Printf("%d ", vv)
+		}
+		ap.PutRune('\n')
 	}
 }
