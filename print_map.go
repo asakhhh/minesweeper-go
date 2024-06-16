@@ -2,6 +2,10 @@ package main
 
 // import "github.com/alem-platform/ap"
 
+func PrintMap(matrix *[][]int, revealed *[][]bool) {
+	PrintMatrix(matrix, revealed)
+}
+
 // func PrintMap(height, width int, value [][]int, revealed [][]bool) {
 // 	length := 1
 // 	p := 1

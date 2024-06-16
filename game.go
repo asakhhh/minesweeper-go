@@ -4,8 +4,30 @@ import (
 	"github.com/alem-platform/ap"
 )
 
+func CountAdjacentBombs(matrix *[][]int) {
+	bomb_count := 0
+
+	for i := 1; i <= HEIGHT; i++ {
+		for j := 1; j <= WIDTH; j++ {
+			bomb_count = 0
+			if (*matrix)[i][j] == 0 {
+
+				for x := i - 1; x <= i+1; x++ {
+					for y := j - 1; y <= j+1; y++ {
+						if (*matrix)[x][y] == -1 {
+							bomb_count += 1
+						}
+					}
+				}
+
+				(*matrix)[i][j] = bomb_count
+			}
+		}
+	}
+}
+
 func EnterMove(matrix *[][]int, revealed *[][]bool) {
-	// PrintMap(matrix, revealed)
+	PrintMap(matrix, revealed)
 
 	PrintString("Enter coordinates: ")
 
@@ -13,46 +35,34 @@ func EnterMove(matrix *[][]int, revealed *[][]bool) {
 	if x <= 0 || x > WIDTH || y <= 0 || y > HEIGHT {
 		PrintString("Invalid coordinates. Please enter in format <x y>\n")
 		EnterMove(matrix, revealed)
+		return
 	}
 
 	if (*matrix)[y][x] == -1 { // BOMB
-		// PrintMap()
+		RevealBombs(matrix, revealed)
+		PrintMap(matrix, revealed)
 		PrintString("Game Over!\n")
 		MOVE_COUNT++
 		PrintStatistics()
+		return
 	} else if (*revealed)[y][x] { // INVALID MOVE
 		PrintString("Invalid coordinates: already revealed cell.\n")
 		EnterMove(matrix, revealed)
+		return
 	} else { // NORMAL MOVE
 		Reveal(matrix, revealed, x, y)
 		MOVE_COUNT++
 
 		if CLOSED_COUNT == 0 { // WIN
-			// PrintMap()
+			PrintMap(matrix, revealed)
 			PrintString("You Win!\n")
 			PrintStatistics()
+			return
 		} else {
 			EnterMove(matrix, revealed)
+			return
 		}
 	}
-}
-
-func PrintStatistics() {
-	PrintString("Your statistics:\n")
-
-	PrintString("- Field size: ")
-	PrintNum(HEIGHT)
-	ap.PutRune('x')
-	PrintNum(WIDTH)
-	ap.PutRune('\n')
-
-	PrintString("- Number of bombs: ")
-	PrintNum(BOMB_COUNT)
-	ap.PutRune('\n')
-
-	PrintString("- Number of moves: ")
-	PrintNum(MOVE_COUNT)
-	ap.PutRune('\n')
 }
 
 func Reveal(matrix *[][]int, revealed *[][]bool, x, y int) {
@@ -73,4 +83,32 @@ func Reveal(matrix *[][]int, revealed *[][]bool, x, y int) {
 			}
 		}
 	}
+}
+
+func RevealBombs(matrix *[][]int, revealed *[][]bool) {
+	for i := 1; i <= HEIGHT; i++ {
+		for j := 1; j <= WIDTH; j++ {
+			if (*matrix)[i][j] == -1 {
+				(*revealed)[i][j] = true
+			}
+		}
+	}
+}
+
+func PrintStatistics() {
+	PrintString("Your statistics:\n")
+
+	PrintString("- Field size: ")
+	PrintNum(HEIGHT)
+	ap.PutRune('x')
+	PrintNum(WIDTH)
+	ap.PutRune('\n')
+
+	PrintString("- Number of bombs: ")
+	PrintNum(BOMB_COUNT)
+	ap.PutRune('\n')
+
+	PrintString("- Number of moves: ")
+	PrintNum(MOVE_COUNT)
+	ap.PutRune('\n')
 }
