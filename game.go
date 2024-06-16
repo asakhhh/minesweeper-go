@@ -1,25 +1,22 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/alem-platform/ap"
 )
 
 func EnterMove(matrix *[][]int, revealed *[][]bool) {
-	PrintMap(&matrix, &revealed)
+	// PrintMap(matrix, revealed)
 
 	PrintString("Enter coordinates: ")
 
-	var x, y int
-	_, err := fmt.Scanf("%d %d", &x, &y)
-	if err != nil || !(x > 0 && x <= WIDTH) || !(y > 0 && y <= HEIGHT) {
+	x, y := ReadTwoNumbers()
+	if x <= 0 || x > WIDTH || y <= 0 || y > HEIGHT {
 		PrintString("Invalid coordinates. Please enter in format <x y>\n")
 		EnterMove(matrix, revealed)
 	}
 
 	if (*matrix)[y][x] == -1 { // BOMB
-		PrintMap()
+		// PrintMap()
 		PrintString("Game Over!\n")
 		MOVE_COUNT++
 		PrintStatistics()
@@ -31,7 +28,7 @@ func EnterMove(matrix *[][]int, revealed *[][]bool) {
 		MOVE_COUNT++
 
 		if CLOSED_COUNT == 0 { // WIN
-			PrintMap()
+			// PrintMap()
 			PrintString("You Win!\n")
 			PrintStatistics()
 		} else {

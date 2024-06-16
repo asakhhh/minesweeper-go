@@ -16,18 +16,19 @@ var (
 
 func main() {
 	PrintString("Hello! This is Minesweeper.\n")
-	PrintString("You can create your own map or play a generated one.\n\n")
+	PrintString("You can create your own map or play a generated one.\n")
+	PrintString("Note that both height and width of the map must be at least 3.\n")
+	PrintString("Also, there must be at least two bombs. Good luck!\n\n")
 
 	MODE := ChooseMode()
 
 	var matrix [][]int
 
+	HEIGHT, WIDTH = ReadHeightAndWidth()
 	if MODE == 1 {
-		HEIGHT, WIDTH = ReadHeightAndWidth()
 		BOMB_COUNT = CustomMap(HEIGHT, WIDTH, &matrix)
 		CLOSED_COUNT = HEIGHT*WIDTH - BOMB_COUNT
 	} else { // Random map
-		HEIGHT, WIDTH = GenerateRandomSize()
 		BOMB_COUNT = GenerateRandomMap(HEIGHT, WIDTH, &matrix)
 		CLOSED_COUNT = HEIGHT*WIDTH - BOMB_COUNT
 	}
@@ -44,14 +45,13 @@ func main() {
 }
 
 func ReadHeightAndWidth() (int, int) {
-	var height, width int
+	print("Enter the height and width of the map separated by a space:\n")
 
-	print("Enter the number of height and width of the map (e.g., '2 3'):\n")
+	height, width := ReadTwoNumbers()
 
-	_, err := fmt.Scanf("%d %d", &height, &width)
-	if err != nil || height < 3 || width < 3 {
-		PrintString("Invalid format for map dimensions. Please enter two positive integers more that 3 separated by a space.")
-		return -1, -1
+	if height < 3 || width < 3 {
+		PrintString("Sorry, your input is invalid. Please enter two numbers separated by a whitespace.\n")
+		return ReadHeightAndWidth()
 	}
 
 	return height, width
@@ -81,6 +81,51 @@ func ChooseMode() int {
 	}
 
 	return int(rune(inp[0]) - '0')
+}
+
+func StringToInt(s string) int {
+	n := 0
+	for _, c := range s {
+		if c < '0' || c > '9' {
+			return -1
+		}
+		n = n*10 + int(rune(c)-'0')
+	}
+	return n
+}
+
+func ReadTwoNumbers() (int, int) {
+	var inp string
+	var r rune
+	fmt.Scanf("%c", &r)
+	if r == '\n' {
+		return -1, -1
+	}
+	for r != '\n' {
+		inp += string(r)
+		fmt.Scanf("%c", &r)
+	}
+
+	has_space := false
+	var num1, num2 string
+	for i, c := range inp {
+		if c == ' ' {
+			if has_space || i == 0 {
+				return -1, -1
+			}
+			has_space = true
+		} else if c < '0' || c > '9' {
+			return -1, -1
+		} else {
+			if has_space {
+				num2 += string(c)
+			} else {
+				num1 += string(c)
+			}
+		}
+	}
+
+	return StringToInt(num1), StringToInt(num2)
 }
 
 func PrintString(str string) {

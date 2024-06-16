@@ -15,10 +15,6 @@ func AlreadyBomb(n int) bool {
 	return false
 }
 
-func GenerateRandomSize() (int, int) {
-	return int(rand.Int31n(8) + 3), int(rand.Int31n(8) + 3)
-}
-
 func GenerateRandomMap(h, w int, matrix *[][]int) int {
 	*matrix = (*matrix)[:0]
 	for i := 0; i < h+2; i++ {
