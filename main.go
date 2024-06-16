@@ -25,7 +25,7 @@ func main() {
 	CLOSED_COUNT = HEIGHT*WIDTH - BOMB_COUNT
 
 	if BOMB_COUNT < 2 {
-		return
+		PrintString("There must be at least two bombs.\n")
 	}
 
 	revealed := make([][]bool, HEIGHT+2)

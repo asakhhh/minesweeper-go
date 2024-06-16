@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/alem-platform/ap"
 )
 
 func ReadLine() string {
@@ -30,30 +28,6 @@ func ChooseMode() int {
 	}
 
 	return int(rune(inp[0]) - '0')
-}
-
-func ReadHeightAndWidth() (int, int) {
-	print("Enter the height and width of the map separated by a space:\n")
-
-	height, width := ReadTwoNumbers()
-
-	if height < 3 || width < 3 {
-		PrintString("Sorry, your input is invalid. Please enter two numbers separated by a whitespace.\n")
-		return ReadHeightAndWidth()
-	}
-
-	return height, width
-}
-
-func StringToInt(s string) int {
-	n := 0
-	for _, c := range s {
-		if c < '0' || c > '9' {
-			return -1
-		}
-		n = n*10 + int(rune(c)-'0')
-	}
-	return n
 }
 
 func ReadTwoNumbers() (int, int) {
@@ -89,41 +63,15 @@ func ReadTwoNumbers() (int, int) {
 	return StringToInt(num1), StringToInt(num2)
 }
 
-func PrintString(str string) {
-	for _, c := range str {
-		ap.PutRune(c)
-	}
-}
+func ReadHeightAndWidth() (int, int) {
+	print("Enter the height and width of the map separated by a space:\n")
 
-func PrintNum(n int) { // to print numbers
-	decimal := 1
-	for decimal <= n {
-		decimal *= 10
-	}
-	decimal = decimal / 10 // to find decimal of n
-	for decimal > 0 {
-		ap.PutRune(rune(n/decimal) + '0')
-		n = n % decimal
-		decimal /= 10
-	}
-}
+	height, width := ReadTwoNumbers()
 
-func PrintMatrix(matrix *[][]int, revealed *[][]bool) {
-	for i := 1; i <= HEIGHT; i++ {
-		for j := 1; j <= WIDTH; j++ {
-			if !(*revealed)[i][j] {
-				PrintString("X  ")
-			} else {
-				fmt.Printf("%d  ", (*matrix)[i][j])
-			}
-		}
-		ap.PutRune('\n')
+	if height < 3 || width < 3 {
+		PrintString("Sorry, your input is invalid. Please enter two numbers separated by a whitespace.\n")
+		return ReadHeightAndWidth()
 	}
-}
 
-func Greetings() {
-	PrintString("Hello! This is Minesweeper.\n")
-	PrintString("You can create your own map or play a generated one.\n\n")
-	PrintString("!!! Note that both height and width of the map must be at least 3. !!!\n")
-	PrintString("!!! Also, there must be at least two bombs. !!!\nGood luck!\n\n")
+	return height, width
 }

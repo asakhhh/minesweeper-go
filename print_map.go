@@ -121,15 +121,6 @@ func PrintYCoord(num, length int) {
 	ap.PutRune(' ')
 }
 
-func LengthOfNum(num int) int {
-	p, res := 1, 1
-	for p*10 <= num {
-		p *= 10
-		res++
-	}
-	return res
-}
-
 func PrintXCoord() {
 	PrintString("    ")
 	for i := 1; i <= WIDTH; i++ {
