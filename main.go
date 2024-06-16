@@ -18,9 +18,9 @@ func main() {
 	HEIGHT, WIDTH = ReadHeightAndWidth()
 
 	if MODE == 1 { // Custom map
-		BOMB_COUNT = CustomMap(HEIGHT, WIDTH, &matrix)
+		BOMB_COUNT = CustomMap(&matrix)
 	} else { // Random map
-		BOMB_COUNT = GenerateRandomMap(HEIGHT, WIDTH, &matrix)
+		BOMB_COUNT = GenerateRandomMap(&matrix)
 	}
 	CLOSED_COUNT = HEIGHT*WIDTH - BOMB_COUNT
 

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"math/rand"
+
 	"github.com/alem-platform/ap"
 )
 
@@ -9,9 +11,9 @@ func CountAdjacentBombs(matrix *[][]int) {
 
 	for i := 1; i <= HEIGHT; i++ {
 		for j := 1; j <= WIDTH; j++ {
-			bomb_count = 0
-			if (*matrix)[i][j] == 0 {
+			if (*matrix)[i][j] != -1 {
 
+				bomb_count = 0
 				for x := i - 1; x <= i+1; x++ {
 					for y := j - 1; y <= j+1; y++ {
 						if (*matrix)[x][y] == -1 {
@@ -39,6 +41,35 @@ func EnterMove(matrix *[][]int, revealed *[][]bool) {
 	}
 
 	if (*matrix)[y][x] == -1 { // BOMB
+		if MOVE_COUNT == 0 {
+			new_cell := int(rand.Int31n(int32(HEIGHT * WIDTH)))
+			cell_h := 1 + new_cell/WIDTH
+			cell_w := 1 + new_cell%WIDTH
+
+			for (*matrix)[cell_h][cell_w] == -1 {
+				new_cell = int(rand.Int31n(int32(HEIGHT * WIDTH)))
+				cell_h = 1 + new_cell/WIDTH
+				cell_w = 1 + new_cell%WIDTH
+			}
+
+			(*matrix)[y][x] = 0
+			(*matrix)[cell_h][cell_w] = -1
+			CountAdjacentBombs(matrix)
+
+			Reveal(matrix, revealed, x, y)
+			MOVE_COUNT++
+
+			if CLOSED_COUNT == 0 { // WIN
+				PrintMap(matrix, revealed)
+				PrintString("You Win!\n")
+				PrintStatistics()
+				return
+			} else {
+				EnterMove(matrix, revealed)
+				return
+			}
+		}
+
 		RevealBombs(matrix, revealed)
 		PrintMap(matrix, revealed)
 		PrintString("Game Over!\n")
