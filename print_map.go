@@ -2,9 +2,42 @@ package main
 
 import "github.com/alem-platform/ap"
 
-// func PrintMap(matrix *[][]int, revealed *[][]bool) {
-// 	PrintMatrix(matrix, revealed)
-// }
+// colors for characters
+var (
+	RESET  = []rune{'\033', '[', '0', 'm'}
+	BLUE   = []rune{'\033', '[', '3', '4', 'm'}
+	RED    = []rune{'\033', '[', '3', '1', 'm'}
+	GREEN  = []rune{'\033', '[', '3', '2', 'm'}
+	WHITE  = []rune{'\033', '[', '9', '7', 'm'}
+	YELLOW = []rune{'\033', '[', '3', '3', 'm'}
+
+	colorCodes = [][]rune{WHITE, BLUE, GREEN, RED, YELLOW, BLUE, GREEN, RED, YELLOW, RESET}
+)
+
+// colors for background
+var (
+	BgRed = []rune("\033[41m")
+
+	colorCodesBG = [][]rune{BgRed, RESET}
+)
+
+// function that colorizes Foreground
+func colorizeFG(val int) {
+	if val >= 0 && val < len(colorCodes) {
+		for _, r := range colorCodes[val] {
+			ap.PutRune(r)
+		}
+	}
+}
+
+// function that colorizes background
+func colorizeBG(val int) {
+	if val >= 0 && val < len(colorCodesBG) {
+		for _, r := range colorCodesBG[val] {
+			ap.PutRune(r)
+		}
+	}
+}
 
 func PrintMap(matrix *[][]int, revealed *[][]bool) {
 	length := LengthOfNum(HEIGHT)
@@ -53,6 +86,7 @@ func printCell(value int, revealed bool, x, y int) {
 	if !revealed {
 		ap.PutRune('X')
 	} else if value == -1 {
+		colorizeBG(0)
 		if x == 2 && y == 4 {
 			ap.PutRune('*')
 		} else if x == 0 {
@@ -60,9 +94,12 @@ func printCell(value int, revealed bool, x, y int) {
 		} else {
 			ap.PutRune(' ')
 		}
+		colorizeBG(1)
 	} else {
 		if x == 2 && y == 4 {
+			colorizeFG(value)
 			ap.PutRune(rune('0' + value))
+			colorizeFG(9)
 		} else if x == 0 {
 			ap.PutRune('_')
 		} else {
@@ -72,7 +109,7 @@ func printCell(value int, revealed bool, x, y int) {
 }
 
 func PrintYCoord(num, length int) {
-	p, curlength := 1, LengthOfNum(num)
+	curlength := LengthOfNum(num)
 
 	ap.PutRune(' ')
 	// part that prints spaces so that matrix numbers arr printed correctly
@@ -80,10 +117,7 @@ func PrintYCoord(num, length int) {
 		ap.PutRune(' ')
 	}
 
-	for p > 0 {
-		ap.PutRune(rune('0' + (num/p)%10))
-		p /= 10
-	}
+	PrintNum(num)
 	ap.PutRune(' ')
 }
 

@@ -41,7 +41,7 @@ func EnterMove(matrix *[][]int, revealed *[][]bool) {
 	}
 
 	if (*matrix)[y][x] == -1 { // BOMB
-		if MOVE_COUNT == 0 {
+		if MOVE_COUNT == 0 && BOMB_COUNT < HEIGHT*WIDTH {
 			new_cell := int(rand.Int31n(int32(HEIGHT * WIDTH)))
 			cell_h := 1 + new_cell/WIDTH
 			cell_w := 1 + new_cell%WIDTH

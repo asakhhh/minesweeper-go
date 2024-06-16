@@ -25,7 +25,8 @@ func GenerateRandomMap(matrix *[][]int) int {
 		*matrix = append(*matrix, t)
 	}
 
-	bomb_count := (HEIGHT*WIDTH*13 + 99) / 100 // 13% of the map, rounded up
+	bomb_percentage := 12
+	bomb_count := (HEIGHT*WIDTH*bomb_percentage + 99) / 100 // 13% of the map, rounded up
 
 	for len(bomb_coords) < bomb_count {
 		new_bomb := rand.Int31n(int32(HEIGHT * WIDTH))
